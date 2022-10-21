@@ -4,12 +4,12 @@ if(isset($_POST['submit'])){
     if(empty($email)){
         echo "<p>please enter your email</p>";
     }
-    $newpassword = $_POST['password'];
-    if(empty($newpassword)){
+    $password = $_POST['password'];
+    if(empty($password)){
         echo "<p> please enter your password</p>";
     }
 
-    resetPassword($email,$newpassword);
+    resetPassword($email,$password);
 }
 
 function resetPassword($email,$password){
@@ -18,53 +18,13 @@ function resetPassword($email,$password){
     $form_data = fgetcsv($handle);
     while (($form_data = fgetcsv($handle)) !== FALSE) {
         if ($form_data[2] == $email) {
-           $file_name= fopen("../storage/users.csv","a");
-            $reset = array("password"=>$password); 
-            $form_data[3]= $reset;
-          fputcsv($file_name,$form_data);
-            fclose($file_name);
-            $successful = true;
-            break;
-        }else{
-            echo "<p>User doesnt exist</p>";
+            $form_data[3]= $password;
+           $handle= fopen("../storage/users.csv","w");
+           fputcsv($handle,$form_data);
+           fclose($handle);
+           echo "<h2>Password Succesfully changed <br> <a href='../forms/login.html'>Login Here</a></h2>";
+           break;
         }
     }
-    fclose($handle);
-if(!$successful){
-    echo "<p>reset failed</p>";
-}else{
-    echo"<p>reset successful</P>";
+    echo "<h2 style='color: red'>Email not found</h2>";
 }
-}
-
-
-///////
-//    //open file 
-//    $file_name = fopen("../storage/users.csv","a");
-//    $no_rows = count(file("../storage/users.csv"));
-//    // append serial number to the userdata.csv file
-//    if($no_rows > 1){
-//        $no_rows = ($no_rows-1) + 1 ;
-//    }
-//    $form_data = array(
-//        "serial_no" => $no_rows,
-//        "name" => $username,
-//        "email"=> $email,
-//        "password"=> $password,
-//    );
-//    fputcsv($file_name,$form_data);
-//    fclose($file_name);
-//    $name="";
-//    $email="";
-//    $password="";
-
-//    //////
-//    $handle = fopen("../storage/users.csv","r");
-//    $form_data = fgetcsv($handle);
-//    while (($form_data = fgetcsv($handle)) !== FALSE) {
-//        if ($form_data[2] == $email && $form_data[3] == $password) {
-//            $successful = true;
-//            break;
-//        }
-//    }
-   
