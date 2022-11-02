@@ -1,8 +1,11 @@
 <?php
+session_start();
 if(isset($_POST['submit'])){
     $username = $_POST['fullname'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+
+    $_SESSION['username'] = $email;
 
 registerUser($username, $email, $password);
 
